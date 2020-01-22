@@ -46,6 +46,7 @@ do
         shift; shift
         ;;
     *)
+        echo "Unknown option ${2} - ignoring"
         shift
         ;;
   esac
