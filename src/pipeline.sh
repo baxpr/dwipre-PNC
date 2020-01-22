@@ -6,23 +6,19 @@ do
   key="$1"
   case $key in
     --project)
-        project="$2"
+        export project="$2"
         shift; shift
         ;;
     --subject)
-        subject="$2"
+        export subject="$2"
         shift; shift
         ;;
     --session)
-        session="$2"
-        shift; shift
-        ;;
-    --scan)
-        scan="$2"
+        export session="$2"
         shift; shift
         ;;
     --outdir)
-        outdir="$2"
+        export outdir="$2"
         shift; shift
         ;;
     *)
@@ -33,7 +29,7 @@ done
 
 # Inputs report
 echo "${project} ${subject} ${session} ${scan}"
-echo "outdir:         $outdir"
+echo "outdir: $outdir"
 
 # Set up working directory and copy/rename inputs
 
