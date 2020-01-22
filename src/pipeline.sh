@@ -42,7 +42,7 @@ do
 done
 
 # Inputs report
-echo "${project} ${subject} ${session} ${scan}"
+echo "${project} ${subject} ${session}"
 echo "    ${dti35_niigz}"
 echo "    ${dti35_bval}"
 echo "    ${dti35_bvec}"
