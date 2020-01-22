@@ -2,7 +2,7 @@
 
 ### PREPROCESSING SCRIPT FOR PNC_V3 DTI DATA
 
-## These assumptions are hardcoded for this data:
+## These assumptions are hardcoded:
 #    - Only a single entry allowed in acq_params file, applied to all DWI volumes
 #    - b=0 volumes are indicated with a value of exactly 0 in the bval files
 
@@ -14,14 +14,16 @@
 #    - dwmri.nii.gz        Original DWI images, globally rescaled per run
 #    - dwmri.bvals         bvals for above
 #    - dwmri.bvecs         bvecs for above
-#    - brain_mean.nii.gz   average of all coregistered b=0 images
-#    - brain_mask.nii.gz   binary brain mask from BET
+#    - b0_mean.nii.gz      average of all coregistered b=0 images
+#    - b0_mask.nii.gz      binary brain mask from BET
+#    - acq_params.txt
+#    - index.txt
 #    - EDDY results in eddy.<contents>
 #        - nii.gz                    eddy corrected dwi series
 #        - rotated_bvecs             adjusted b vectors
 #        - bvals                     b values copied from input
 #        - eddy_cnr_maps.nii.gz      snr for b0s, cnr for dwis
-#        - eddy_parameters           inter-volume movement (three transl, three rot)
+#        - eddy_parameters           inter-volume movement 6 dof
 #        - eddy_movement_rms
 #        - eddy_restricted_movement_rms
 #        - eddy_values_of_all_input_parameters
