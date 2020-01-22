@@ -38,16 +38,21 @@ dti36_bval=DTI_2x32_36.bval
 dti36_bvec=DTI_2x32_36.bvec
 
 bet_opts="-m -f 0.3 -R"
-
-## acqparams file
-printf '0 -1 0 0.05\n' > acqparams.txt
-
-## index file
-printf '1\n%.0s' {1..71} > index.txt
+acq_params="0 -1 0 0.05"
 
 
 # Work in outputs directory
 cd "${out_dir}"
+
+# FIXME wouldn't hurt to run FDT before and after and make an image to verify bvecs
+
+
+## acqparams file
+printf '${acq_params}\n' > acqparams.txt
+
+## index file (one value for each volume of the final combined dwi image set)
+printf '1\n%.0s' {1..71} > index.txt
+
 
 ## b0 normalization for 35 volume run
 echo "b=0 normalization for dti35"
@@ -73,7 +78,7 @@ fslmerge -t dwi35.nii.gz dwi35_????.nii.gz
 cp dwi35_0000.nii.gz b0_35_1.nii.gz
 cp dwi35_0011.nii.gz b0_35_2.nii.gz
 cp dwi35_0022.nii.gz b0_35_3.nii.gz
-#rm dwi35_????.nii.gz
+rm dwi35_????.nii.gz
 
 
 
@@ -104,7 +109,7 @@ cp dwi36_0000.nii.gz b0_36_1.nii.gz
 cp dwi36_0011.nii.gz b0_36_2.nii.gz
 cp dwi36_0022.nii.gz b0_36_3.nii.gz
 cp dwi36_0035.nii.gz b0_36_4.nii.gz
-#rm dwi36_????.nii.gz
+rm dwi36_????.nii.gz
 
 
 
