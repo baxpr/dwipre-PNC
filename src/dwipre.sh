@@ -26,10 +26,31 @@
 #	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
 #	- 
 
+# Output directory
+out_dir=../OUTPUTS
 
+# Inputs (Filenames in out_dir)
+dti35_niigz=DTI_2x32_35.nii.gz
+dti35_bval=DTI_2x32_35.bval
+dti35_bvec=DTI_2x32_35.bvec
+dti36_niigz=DTI_2x32_36.nii.gz
+dti36_bval=DTI_2x32_36.bval
+dti36_bvec=DTI_2x32_36.bvec
+
+bet_opts="-m -f 0.3 -R"
+
+## acqparams file
+printf '0 -1 0 0.05\n' > acqparams.txt
+
+## index file
+printf '1\n%.0s' {1..71} > index.txt
+
+
+# Work in outputs directory
+cd "${out_dir}"
 
 ## b0 normalization for 35 volume run
-fslsplit DTI_2x32_35.nii.gz dwi35_
+fslsplit "${dti35_niigz}" dwi35_
 
 # get mean b0 value
 b0_1=$(fslstats dwi35_0000.nii.gz -M)
@@ -38,28 +59,26 @@ b0_3=$(fslstats dwi35_0022.nii.gz -M)
 b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3) / 3}")
 
 # apply b0 intensity normalization
-array=( dwi35_* )
+array=( dwi35_????.nii.gz )
 echo "${array[@]}"
-
-for i in "${array[@]}"
-do
+for i in "${array[@]}" ; do
    fslmaths $i -div $b0_mean $i
 done
 
 # concatenate volumes
-fslmerge -t dwi35.nii.gz dwi35_*
+fslmerge -t dwi35.nii.gz dwi35_????.nii.gz
 
 # save individual b0s
 cp dwi35_0000.nii.gz b0_35_1.nii.gz
 cp dwi35_0011.nii.gz b0_35_2.nii.gz
 cp dwi35_0022.nii.gz b0_35_3.nii.gz
-rm dwi35_*
+#rm dwi35_????.nii.gz
 
 
 
 
 ## b0 normalization for 36 volume run
-fslsplit DTI_2x32_36.nii.gz dwi36_
+fslsplit "${dti36_niigz}" dwi36_
 
 # get mean b0 value
 b0_1=$(fslstats dwi36_0000.nii.gz -M)
@@ -69,78 +88,83 @@ b0_4=$(fslstats dwi36_0035.nii.gz -M)
 b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3 + $b0_4) / 4}")
 
 # apply b0 intensity normalization
-array=( dwi36_* )
+array=( dwi36_????.nii.gz )
 echo "${array[@]}"
-
-for i in "${array[@]}"
-do
+for i in "${array[@]}" ; do
    fslmaths $i -div $b0_mean $i
 done
 
 # concatenate volumes
-fslmerge -t dwi36.nii.gz dwi36_*
+fslmerge -t dwi36.nii.gz dwi36_????.nii.gz
 
 # save individual b0s
 cp dwi36_0000.nii.gz b0_36_1.nii.gz
 cp dwi36_0011.nii.gz b0_36_2.nii.gz
 cp dwi36_0022.nii.gz b0_36_3.nii.gz
 cp dwi36_0035.nii.gz b0_36_4.nii.gz
-rm dwi36_*
+#rm dwi36_????.nii.gz
 
 
 
 
 ## concatenate dwi runs for eddy
 fslmerge -t dwmri.nii.gz dwi35.nii.gz dwi36.nii.gz 
-rm dwi3* 
+#rm dwi3*.nii.gz
 
 
 
 
 
 ## coregister b0s to 1st b0 in run #1
-flirt -in b0_35_2.nii.gz -ref b0_35_1.nii.gz -out b0_35_2.nii.gz -omat b0_35_2_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
+flirt_opts1="-ref b0_35_1.nii.gz -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear"
+flirt -in b0_35_2.nii.gz -out b0_35_2.nii.gz -omat b0_35_2.mat ${flirt_opts1}
+flirt -in b0_35_3.nii.gz -out b0_35_3.nii.gz -omat b0_35_3.mat ${flirt_opts1}
+flirt -in b0_36_1.nii.gz -out b0_36_1.nii.gz -omat b0_36_1.mat ${flirt_opts1}
+flirt -in b0_36_2.nii.gz -out b0_36_2.nii.gz -omat b0_36_2.mat ${flirt_opts1}
+flirt -in b0_36_3.nii.gz -out b0_36_3.nii.gz -omat b0_36_3.mat ${flirt_opts1}
+flirt -in b0_36_4.nii.gz -out b0_36_4.nii.gz -omat b0_36_4.mat ${flirt_opts1}
 
-flirt -in b0_35_3.nii.gz -ref b0_35_1.nii.gz -out b0_35_3.nii.gz -omat b0_35_3_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
-
-flirt -in b0_36_1.nii.gz -ref b0_35_1.nii.gz -out b0_36_1.nii.gz -omat b0_36_1_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
-
-flirt -in b0_36_2.nii.gz -ref b0_35_1.nii.gz -out b0_36_2.nii.gz -omat b0_36_2_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
-
-flirt -in b0_36_3.nii.gz -ref b0_35_1.nii.gz -out b0_36_3.nii.gz -omat b0_36_3_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
-
-flirt -in b0_36_4.nii.gz -ref b0_35_1.nii.gz -out b0_36_4.nii.gz -omat b0_36_4_coreg.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear
-
-flirt -in b0_35_2.nii.gz -applyxfm -init b0_35_2_coreg.mat -out b0_35_2_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
-flirt -in b0_35_3.nii.gz -applyxfm -init b0_35_3_coreg.mat -out b0_35_3_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
-flirt -in b0_36_1.nii.gz -applyxfm -init b0_36_1_coreg.mat -out b0_36_1_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
-flirt -in b0_36_2.nii.gz -applyxfm -init b0_36_2_coreg.mat -out b0_36_2_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
-flirt -in b0_36_3.nii.gz -applyxfm -init b0_36_3_coreg.mat -out b0_36_3_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
-flirt -in b0_36_4.nii.gz -applyxfm -init b0_36_4_coreg.mat -out b0_36_4_coreg.nii.gz -paddingsize 0.0 -interp trilinear -ref b0_35_1.nii.gz
+flirt_opts2="-ref b0_35_1.nii.gz -paddingsize 0.0 -interp trilinear"
+flirt -in b0_35_2.nii.gz -applyxfm -init b0_35_2.mat -out b0_35_2_coreg.nii.gz ${flirt_opts2}
+flirt -in b0_35_3.nii.gz -applyxfm -init b0_35_3.mat -out b0_35_3_coreg.nii.gz ${flirt_opts2}
+flirt -in b0_36_1.nii.gz -applyxfm -init b0_36_1.mat -out b0_36_1_coreg.nii.gz ${flirt_opts2}
+flirt -in b0_36_2.nii.gz -applyxfm -init b0_36_2.mat -out b0_36_2_coreg.nii.gz ${flirt_opts2}
+flirt -in b0_36_3.nii.gz -applyxfm -init b0_36_3.mat -out b0_36_3_coreg.nii.gz ${flirt_opts2}
+flirt -in b0_36_4.nii.gz -applyxfm -init b0_36_4.mat -out b0_36_4_coreg.nii.gz ${flirt_opts2}
 
 ## average b0s (average of 7)
-fslmaths b0_35_1.nii.gz -add b0_35_2_coreg.nii.gz -add b0_35_3_coreg.nii.gz -add b0_36_1_coreg.nii.gz -add b0_36_2_coreg.nii.gz -add b0_36_3_coreg.nii.gz -add b0_36_4_coreg.nii.gz -div 7 b0.nii.gz
-rm b0_3*
+fslmaths \
+  b0_35_1.nii.gz \
+  -add b0_35_2_coreg.nii.gz \
+  -add b0_35_3_coreg.nii.gz \
+  -add b0_36_1_coreg.nii.gz \
+  -add b0_36_2_coreg.nii.gz \
+  -add b0_36_3_coreg.nii.gz \
+  -add b0_36_4_coreg.nii.gz \
+  -div 7 \
+  b0.nii.gz
+#rm b0_3*
 
-## bet b0 
-bet b0.nii.gz b0_brain -m -f 0.3 -R
+## bet b0
+bet b0.nii.gz b0_brain ${bet_opts}
 
 
-
-
-## acqparams file
-printf '0 -1 0 0.05\n' > acqparams.txt
-
-## index file
-printf '1\n%.0s' {1..71} > index.txt
 
 ## concatenate bvals and bvecs 
-paste -d '\t' DTI_2x32_35.bval DTI_2x32_36.bval > bvals.bvals
-paste -d '\t' DTI_2x32_35.bvec DTI_2x32_36.bvec > bvecs.bvecs
+paste -d '\t' "${dti35_bval}" "${dti36_bval}" > bvals.bvals
+paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > bvecs.bvecs
 
 ## eddy-correction
-eddy --imain=dwmri.nii.gz --mask=b0_brain_mask.nii.gz --acqp=acqparams.txt --index=index.txt --bvecs=bvecs.bvecs --bvals=bvals.bvals --out=eddy_results --verbose --cnr_maps
-
+eddy \
+  --imain=dwmri.nii.gz \
+  --mask=b0_brain_mask.nii.gz \
+  --acqp=acqparams.txt \
+  --index=index.txt \
+  --bvecs=bvecs.bvecs \
+  --bvals=bvals.bvals \
+  --out=eddy_results \
+  --verbose \
+  --cnr_maps
 
 
 
@@ -148,4 +172,9 @@ eddy --imain=dwmri.nii.gz --mask=b0_brain_mask.nii.gz --acqp=acqparams.txt --ind
 ### qc plots
 
 ## bet qc plot
-fsleyes render --scene lightbox -zx Z -nr 10 -nc 10 --outfile bet_qc b0.nii.gz -dr 0 7 b0_brain_mask.nii.gz -ot mask --outline -mc 255 0 0
+fsleyes render \
+  --scene lightbox \
+  -zx Z -nr 10 -nc 10 \
+  --outfile bet_qc \
+  b0.nii.gz -dr 0 7 \
+  b0_brain_mask.nii.gz -ot mask --outline -mc 255 0 0
