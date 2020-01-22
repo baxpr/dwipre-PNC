@@ -79,7 +79,7 @@ paste -d '\t' "${dti35_bval}" "${dti36_bval}" > dwmri.bvals
 paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > dwmri.bvecs
 
 ## Brain mask on average b=0 of combined image set
-get_mask_from_b0 dwmri.nii.gz dwmri.bvals brain
+get_mask_from_b0 dwmri.nii.gz dwmri.bvals b0
 
 ## Index file (one value for each volume of the final combined dwi image set)
 # Assume all volumes had the same acq params, the first entry in acq_params.txt
@@ -92,7 +92,7 @@ for i in $(seq 1 ${dim4}) ; do echo '1' >> index.txt ; done
 echo "EDDY"
 eddy \
   --imain=dwmri.nii.gz \
-  --mask=brain_mask.nii.gz \
+  --mask=b0_mask.nii.gz \
   --acqp=acqparams.txt \
   --index=index.txt \
   --bvecs=dwmri.bvecs \
@@ -113,8 +113,8 @@ fsleyes render \
   --scene lightbox \
   -zx Z -nr 10 -nc 10 \
   --outfile bet_qc.png \
-  brain_mean.nii.gz -dr 0 7 \
-  brain_mask.nii.gz -ot mask --outline -mc 255 0 0
+  b0_mean.nii.gz -dr 0 7 \
+  b0_mask.nii.gz -ot mask --outline -mc 255 0 0
 
 # PDF
 convert \
