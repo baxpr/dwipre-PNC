@@ -65,5 +65,5 @@ echo "outdir: $outdir"
 dwipre.sh
 
 # Organize outputs
-organize_outputs
+organize_outputs.sh
 
