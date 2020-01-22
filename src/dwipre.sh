@@ -33,10 +33,10 @@
 #	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
 #	- 
 
+
 # FIXME 
 # Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 # Verify that geometry matches for both DTIs
-
 
 # Output directory
 out_dir=../OUTPUTS
@@ -49,7 +49,11 @@ dti36_niigz=DTI_2x32_36.nii.gz
 dti36_bval=DTI_2x32_36.bval
 dti36_bvec=DTI_2x32_36.bvec
 
-export bet_opts="-m -f 0.3 -R"
+# BET options (note, -n -m are already hard-coded later, for pipeline 
+# to work correctly)
+export bet_opts="-f 0.3 -R"
+
+# Acquisition params. Only one line / one entry is accommodated
 acq_params="0 -1 0 0.05"
 
 
@@ -66,6 +70,7 @@ cd "${out_dir}"
 printf "${acq_params}\n" > acqparams.txt
 
 ## b0 normalization for 35- and 36-volume runs
+# Overwrites existing files with globally scaled values
 pre_normalize_dwi "${dti35_niigz}" "${dti35_bval}"
 pre_normalize_dwi "${dti36_niigz}" "${dti36_bval}"
 

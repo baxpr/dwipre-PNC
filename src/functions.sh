@@ -56,8 +56,8 @@ function get_mask_from_b0 {
   fslmaths tmp_b0.nii.gz -Tmean "${out_pfx}_mean.nii.gz"
   
   # Compute brain mask
-  echo "BET options ${bet_opts}"
-  bet "${out_pfx}_mean.nii.gz" "${out_pfx}_brain" ${bet_opts}
+  echo "BET options -n -m ${bet_opts}"
+  bet "${out_pfx}_mean.nii.gz" "${out_pfx}" -n -m ${bet_opts}
 
   # Clean up temp files
   rm -f ${b0_files[@]} tmp_b0.nii.gz
