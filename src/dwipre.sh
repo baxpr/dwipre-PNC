@@ -25,6 +25,9 @@
 # eddy_movement_rms
 # eddy_restricted_movement_rms
 # rotated_bvecs
+# eddy_values_of_all_input_parameters
+# eddy_command_txt
+
 
 ## QC plots are:
 #	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
@@ -75,7 +78,7 @@ b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3) / 3}")
 array=( dwi35_????.nii.gz )
 echo "${array[@]}"
 for i in "${array[@]}" ; do
-   fslmaths $i -div $b0_mean $i
+   fslmaths $i -div $b0_mean $i -odt float
 done
 
 # concatenate volumes
@@ -105,7 +108,7 @@ b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3 + $b0_4) / 4}")
 array=( dwi36_????.nii.gz )
 echo "${array[@]}"
 for i in "${array[@]}" ; do
-   fslmaths $i -div $b0_mean $i
+   fslmaths $i -div $b0_mean $i -odt float
 done
 
 # concatenate volumes
@@ -159,7 +162,8 @@ fslmaths \
   -add b0_36_3_coreg.nii.gz \
   -add b0_36_4_coreg.nii.gz \
   -div 7 \
-  b0.nii.gz
+  b0.nii.gz \
+  -odt float
 #rm b0_3*
 
 ## bet b0
