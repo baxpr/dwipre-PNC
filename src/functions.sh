@@ -73,7 +73,7 @@ function pre_normalize_dwi {
   dwi_file="${1}"    # Input DWI image (will be overwritten with result)
   bval_file="${2}"   # Matching bvals
 
-  echo "Pre-normalize"
+  echo "Pre-normalize ${dwi_file}"
 
   # Get the brain mask from average b=0 image
   get_mask_from_b0 "${dwi_file}" "${bval_file}" tmp_b0
