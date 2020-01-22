@@ -44,7 +44,9 @@ acq_params="0 -1 0 0.05"
 # Work in outputs directory
 cd "${out_dir}"
 
-# FIXME wouldn't hurt to run FDT before and after and make an image to verify bvecs
+# FIXME 
+# Verify b=0 volumes
+# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 
 
 ## acqparams file
