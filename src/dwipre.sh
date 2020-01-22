@@ -16,7 +16,7 @@
 #    - dwmri.bvecs         bvecs for above
 #    - brain_mean.nii.gz   average of all coregistered b=0 images
 #    - brain_mask.nii.gz   binary brain mask from BET
-#    - EDDY results in eddy_results.<contents>
+#    - EDDY results in eddy.<contents>
 #        - nii.gz                    eddy corrected dwi series
 #        - rotated_bvecs             adjusted b vectors
 #        - bvals                     b values copied from input
@@ -97,11 +97,11 @@ eddy \
   --index=index.txt \
   --bvecs=dwmri.bvecs \
   --bvals=dwmri.bvals \
-  --out=eddy_results \
+  --out=eddy \
   --verbose \
   --cnr_maps
 
-cp dwmri.bvals eddy_results.bvals
+cp dwmri.bvals eddy.bvals
 
 
 
