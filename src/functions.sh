@@ -48,7 +48,7 @@ function get_mask_from_b0 {
 
     # FLIRT to register the others, overwriting the input image each time
     echo "Registering ${b0_file} to ${b0_files[0]}"
-    flirt_opts="-bins 256 -cost corratio -searchrx -15 15 -searchry -15 15 -searchrz -15 15 -dof 6 -interp trilinear"
+    flirt_opts="-bins 256 -cost corratio -searchrx -45 45 -searchry -45 45 -searchrz -45 45 -dof 6 -interp trilinear"
     flirt -in ${b0_file} -out ${b0_file} -ref ${b0_files[0]} ${flirt_opts}
 
   done
