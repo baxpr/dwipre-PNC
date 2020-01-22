@@ -16,13 +16,14 @@
 #    - dwmri.bvecs         bvecs for above
 #    - brain_mean.nii.gz   average of all coregistered b=0 images
 #    - brain_mask.nii.gz   binary brain mask from BET
-#    - EDDY results
-#        - eddy_results.nii.gz                  eddy corrected dwi series
-#        - eddy_results.eddy_cnr_maps.nii.gz    snr for b0s, cnr for dwis
-#        - eddy_results.eddy_parameters         inter-volume movement (three transl, three rot)
+#    - EDDY results in eddy_results.<contents>
+#        - nii.gz                    eddy corrected dwi series
+#        - rotated_bvecs             adjusted b vectors
+#        - bvals                     b values copied from input
+#        - eddy_cnr_maps.nii.gz      snr for b0s, cnr for dwis
+#        - eddy_parameters           inter-volume movement (three transl, three rot)
 #        - eddy_movement_rms
 #        - eddy_restricted_movement_rms
-#        - rotated_bvecs
 #        - eddy_values_of_all_input_parameters
 #        - eddy_command_txt
 
@@ -100,6 +101,7 @@ eddy \
   --verbose \
   --cnr_maps
 
+cp dwmri.bvals eddy_results.bvals
 
 
 
