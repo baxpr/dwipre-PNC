@@ -24,6 +24,9 @@ function get_mask_from_b0 {
   dwi_file="${1}"       # Input DWI file
   bval_file="${2}"      # Matching bvals
   out_pfx="${3}"        # Prefix for outputs
+                        #    ${out_pfx}.nii.gz        Masked mean b=0
+                        #    ${out_pfx}_mean.nii.gz   Mean b=0
+                        #    ${out_pfx}_mean.nii.gz   Brain mask
   
   # Find the volumes with b=0. FSL and bash both use 0-based indexing
   read -a zinds <<< "$(find_zero_bvals ${bval_file})"
