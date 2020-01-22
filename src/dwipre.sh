@@ -21,6 +21,10 @@
 #	- eddy_results.nii.gz = eddy corrected dwi series
 # 	- eddy_results.eddy_cnr_maps.nii.gz = snr for b0s, cnr for dwis
 #	- eddy_results.eddy_parameters = the first six columns correspond to subject movement (three translations, three rotations)
+#
+# eddy_movement_rms
+# eddy_restricted_movement_rms
+# rotated_bvecs
 
 ## QC plots are:
 #	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
@@ -50,7 +54,7 @@ cd "${out_dir}"
 
 
 ## acqparams file
-printf '${acq_params}\n' > acqparams.txt
+printf "${acq_params}\n" > acqparams.txt
 
 ## index file (one value for each volume of the final combined dwi image set)
 printf '1\n%.0s' {1..71} > index.txt
