@@ -19,13 +19,12 @@ function find_zero_bvals {
 }
 
 
-function pre_normalize_dwi {
+function get_mask_from_b0 {
 
-  dwi_file="${1}"
-  bval_file="${2}"
-
-  echo "Pre-normalize"
-
+  dwi_file="${1}"       # Input DWI file
+  bval_file="${2}"      # Matching bvals
+  out_pfx="${3}"        # Prefix for outputs
+  
   # Find the volumes with b=0	
   read -a zinds <<< "$(find_zero_bvals ${bval_file})"
   echo "Found b=0 volumes in ${dwi_file},${bval_file} at ${zinds[@]}"
@@ -53,11 +52,29 @@ function pre_normalize_dwi {
 
   # Average the registered b=0 volumes
   fslmerge -t tmp_b0.nii.gz $(echo "${b0_files[@]}")
-  fslmaths tmp_b0.nii.gz -Tmean tmp_b0mean.nii.gz
+  fslmaths tmp_b0.nii.gz -Tmean "${out_pfx}_mean.nii.gz"
   
-  # Compute brain mask and get mean in-mask intensity
-  bet tmp_b0mean.nii.gz tmp_b0brain ${bet_opts}
-  brainmean=$(fslstats tmp_b0mean.nii.gz -k tmp_b0brain_mask.nii.gz -M)
+  # Compute brain mask
+  bet "${out_pfx}_mean.nii.gz" "${out_pfx}_brain" ${bet_opts}
+
+  # Clean up temp files
+  rm -f tmp_b0*.nii.gz
+  
+}
+
+
+
+function pre_normalize_dwi {
+
+  dwi_file="${1}"    # Input DWI image
+  bval_file="${2}"   # Matching bvals
+
+  echo "Pre-normalize"
+
+  get_mask_from_b0 "${dwi_file}" "${bval_file}" tmp_b0
+
+  # Get mean in-mask intensity
+  brainmean=$(fslstats tmp_b0_mean.nii.gz -k tmp_b0_brain_mask.nii.gz -M)
   echo "Mean brain intensity: ${brainmean}"
   
   # Apply global scaling to the original DWI, overwriting original
@@ -68,4 +85,5 @@ function pre_normalize_dwi {
   rm -f tmp_b0*.nii.gz
   
 }
+
 

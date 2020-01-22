@@ -44,18 +44,21 @@ dti36_niigz=DTI_2x32_36.nii.gz
 dti36_bval=DTI_2x32_36.bval
 dti36_bvec=DTI_2x32_36.bvec
 
-bet_opts="-m -f 0.3 -R"
+export bet_opts="-m -f 0.3 -R"
 acq_params="0 -1 0 0.05"
 
+
+# Functions we will need
+#    pre_normalize_dwi
+source functions.sh
 
 # Work in outputs directory
 cd "${out_dir}"
 
 # FIXME 
-# Verify b=0 volumes
 # Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 # Verify that geometry matches for both DTIs
-# Get pre-normalize scaling factor from brain instead of whole FOV?
+# Get pre-normalize scaling factor from brain instead of whole FOV:
 #   Move the prenormalization into sourced functions:
 #     For each run: find the b=0, coreg/average the b=0, run BET to get mask
 #     Find the union of the two masks
@@ -69,71 +72,12 @@ printf "${acq_params}\n" > acqparams.txt
 # Assume all volumes had the same acq params.
 printf '1\n%.0s' {1..71} > index.txt
 
-
-## b0 normalization for 35 volume run
-echo "b=0 normalization for dti35"
-fslsplit "${dti35_niigz}" dwi35_
-
-# get mean b0 value
-b0_1=$(fslstats dwi35_0000.nii.gz -M)
-b0_2=$(fslstats dwi35_0011.nii.gz -M)
-b0_3=$(fslstats dwi35_0022.nii.gz -M)
-b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3) / 3}")
-
-# apply b0 intensity normalization
-array=( dwi35_????.nii.gz )
-echo "${array[@]}"
-for i in "${array[@]}" ; do
-   fslmaths $i -div $b0_mean $i -odt float
-done
-
-# concatenate volumes
-fslmerge -t dwi35.nii.gz dwi35_????.nii.gz
-
-# save individual b0s
-cp dwi35_0000.nii.gz b0_35_1.nii.gz
-cp dwi35_0011.nii.gz b0_35_2.nii.gz
-cp dwi35_0022.nii.gz b0_35_3.nii.gz
-rm dwi35_????.nii.gz
-
-
-
-
-## b0 normalization for 36 volume run
-echo "b=0 normalization for dti36"
-fslsplit "${dti36_niigz}" dwi36_
-
-# get mean b0 value
-b0_1=$(fslstats dwi36_0000.nii.gz -M)
-b0_2=$(fslstats dwi36_0011.nii.gz -M)
-b0_3=$(fslstats dwi36_0022.nii.gz -M)
-b0_4=$(fslstats dwi36_0035.nii.gz -M)
-b0_mean=$(awk "BEGIN {print ($b0_1 + $b0_2 + $b0_3 + $b0_4) / 4}")
-
-# apply b0 intensity normalization
-array=( dwi36_????.nii.gz )
-echo "${array[@]}"
-for i in "${array[@]}" ; do
-   fslmaths $i -div $b0_mean $i -odt float
-done
-
-# concatenate volumes
-fslmerge -t dwi36.nii.gz dwi36_????.nii.gz
-
-# save individual b0s
-cp dwi36_0000.nii.gz b0_36_1.nii.gz
-cp dwi36_0011.nii.gz b0_36_2.nii.gz
-cp dwi36_0022.nii.gz b0_36_3.nii.gz
-cp dwi36_0035.nii.gz b0_36_4.nii.gz
-rm dwi36_????.nii.gz
-
-
-
+## b0 normalization for 35- and 36-volume runs
+pre_normalize_dwi "${dti35_niigz}" "${dti35_bval}"
+pre_normalize_dwi "${dti36_niigz}" "${dti36_bval}"
 
 ## concatenate dwi runs for eddy
-fslmerge -t dwmri.nii.gz dwi35.nii.gz dwi36.nii.gz 
-#rm dwi3*.nii.gz
-
+fslmerge -t dwmri.nii.gz "${dti35_niigz}" "${dti36_niigz}"
 
 
 
