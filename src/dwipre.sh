@@ -4,6 +4,7 @@
 
 ## These assumptions are hardcoded for this data:
 #    - Only a single entry allowed in acq_params file, applied to all DWI volumes
+#    - b=0 volumes are indicated with a value of exactly 0 in the bval files
 
 ## Input files from xnat (see pipeline.sh for the env variables that hold the filenames)
 #    - DTI_2x32_35.nii.gz/bval/bvec (run #1)

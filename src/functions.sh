@@ -76,7 +76,7 @@ function pre_normalize_dwi {
   get_mask_from_b0 "${dwi_file}" "${bval_file}" tmp_b0
 
   # Get mean in-mask intensity
-  brainmean=$(fslstats tmp_b0_mean.nii.gz -k tmp_b0_brain_mask.nii.gz -M)
+  brainmean=$(fslstats tmp_b0_mean.nii.gz -k tmp_b0_mask.nii.gz -M)
   echo "Mean brain intensity: ${brainmean}"
   
   # Apply global scaling to the original DWI, overwriting original
