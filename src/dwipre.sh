@@ -106,15 +106,15 @@ cp dwmri.bvals eddy_results.bvals
 
 
 ### qc plots
+echo "QC plot"
 
 ## bet qc plot
-echo "QC plot"
 fsleyes render \
   --scene lightbox \
   -zx Z -nr 10 -nc 10 \
   --outfile bet_qc.png \
-  b0.nii.gz -dr 0 7 \
-  b0_brain_mask.nii.gz -ot mask --outline -mc 255 0 0
+  brain_mean.nii.gz -dr 0 7 \
+  brain_mask.nii.gz -ot mask --outline -mc 255 0 0
 
 # PDF
 convert \
@@ -124,3 +124,4 @@ convert \
   -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
   -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
   dwipre-PNC.pdf
+
