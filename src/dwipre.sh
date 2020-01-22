@@ -111,17 +111,18 @@ cp dwmri.bvals eddy.bvals
 echo "QC plot"
 
 ## bet qc plot
+# 4mm slice spacing with 36 slices gives 144mm coverage which is probably good
 fsleyes render \
   --scene lightbox \
-  -zx Z -nr 10 -nc 10 \
+  -zx Z -nr 6 -nc 6 -hc -ss 4 \
   --outfile bet_qc.png \
-  b0_mean.nii.gz -dr 0 7 \
-  b0_mask.nii.gz -ot mask --outline -mc 255 0 0
+  b0_mean.nii.gz -dr 0 99% \
+  b0_mask.nii.gz -ot mask --outline -w 4 -mc 255 0 0
 
 # PDF
 convert \
   -size 2600x3365 xc:white \
-  -gravity center \( bet_qc.png -resize 2400x1200 \) -geometry +0+0 -composite \
+  -gravity center \( bet_qc.png -resize 2400x \) -geometry +0+0 -composite \
   -gravity center -pointsize 48 -annotate +0-1300 "eddy preprocess for PNC" \
   -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
   -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
