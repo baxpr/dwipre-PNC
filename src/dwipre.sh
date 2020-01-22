@@ -199,6 +199,15 @@ echo "QC plot"
 fsleyes render \
   --scene lightbox \
   -zx Z -nr 10 -nc 10 \
-  --outfile bet_qc \
+  --outfile bet_qc.png \
   b0.nii.gz -dr 0 7 \
   b0_brain_mask.nii.gz -ot mask --outline -mc 255 0 0
+
+# PDF
+convert \
+  -size 2600x3365 xc:white \
+  -gravity center \( bet_qc.png -resize 2400x1200 \) -geometry +0+0 -composite \
+  -gravity center -pointsize 48 -annotate +0-1300 "eddy preprocess for PNC" \
+  -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
+  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
+  dwipre-PNC.pdf
