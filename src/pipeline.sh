@@ -36,7 +36,7 @@ do
         export outdir="$2"
         shift; shift ;;
     *)
-        echo "Unknown option ${2} - ignoring"
+        echo "Unknown option ${1} - ignoring"
         shift ;;
   esac
 done
