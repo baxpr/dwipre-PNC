@@ -53,6 +53,7 @@ cd "${out_dir}"
 
 # FIXME 
 # Verify b=0 volumes
+# Get pre-normalize scaling factor from brain instead of whole FOV?
 # Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 
 
