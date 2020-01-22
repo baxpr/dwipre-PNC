@@ -3,30 +3,27 @@
 ### PREPROCESSING SCRIPT FOR PNC_V3 DTI DATA
 
 ## These assumptions are hardcoded for this data:
-#	- the position of b0s in series (35 vol = 1, 12, 23; 36 vol = 1, 12, 23, 36)
-#	- acqparams file (phase encoding of A -> P and readout times; 0 -1 0 0.05)
-#	- index file (correspondence between volume and acqparams; 71 x 1's)
+#    - Only a single entry allowed in acq_params file, applied to all DWI volumes
 
 ## Input files from xnat (see pipeline.sh for the env variables that hold the filenames)
-#	- DTI_2x32_35.nii.gz/bval/bvec (run #1)
-#	- DTI_2x32_36.nii.gz/bval/bvec (run #2)
+#    - DTI_2x32_35.nii.gz/bval/bvec (run #1)
+#    - DTI_2x32_36.nii.gz/bval/bvec (run #2)
 
 ## Major output files are:
-#	- dwmri.nii.gz = b0 (avg of 7) + dwi run #1 (32 dir) + dwi run #2 (32 dir), raw data
-#	- b0.nii.gz = b0 file (average of 7)
-#	- b0_brain.nii.gz = skull-stripped b0 file (average of 7)
-#	- b0_brain_mask.nii.gz = binary mask from b0_brain.nii.gz
-#	- bval.bval = bvals in same order as dwmri.nii.gz 65 vol series
-#	- bvec.bvec = bvecs in same order as dwmri.nii.gz 65 vol series
-#	- eddy_results.nii.gz = eddy corrected dwi series
-# 	- eddy_results.eddy_cnr_maps.nii.gz = snr for b0s, cnr for dwis
-#	- eddy_results.eddy_parameters = the first six columns correspond to subject movement (three translations, three rotations)
-#
-# eddy_movement_rms
-# eddy_restricted_movement_rms
-# rotated_bvecs
-# eddy_values_of_all_input_parameters
-# eddy_command_txt
+#    - dwmri.nii.gz        Original DWI images, globally rescaled per run
+#    - dwmri.bvals         bvals for above
+#    - dwmri.bvecs         bvecs for above
+#    - brain_mean.nii.gz   average of all coregistered b=0 images
+#    - brain_mask.nii.gz   binary brain mask from BET
+#    - EDDY results
+#        - eddy_results.nii.gz                  eddy corrected dwi series
+#        - eddy_results.eddy_cnr_maps.nii.gz    snr for b0s, cnr for dwis
+#        - eddy_results.eddy_parameters         inter-volume movement (three transl, three rot)
+#        - eddy_movement_rms
+#        - eddy_restricted_movement_rms
+#        - rotated_bvecs
+#        - eddy_values_of_all_input_parameters
+#        - eddy_command_txt
 
 
 ## QC plots are:
