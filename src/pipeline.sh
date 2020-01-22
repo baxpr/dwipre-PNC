@@ -44,11 +44,11 @@ done
 # Inputs report
 echo "${project} ${subject} ${session}"
 echo "    ${dti35_niigz}"
-echo "    ${dti35_bval}"
-echo "    ${dti35_bvec}"
+echo "       ${dti35_bval}"
+echo "       ${dti35_bvec}"
 echo "    ${dti36_niigz}"
-echo "    ${dti36_bval}"
-echo "    ${dti36_bvec}"
+echo "       ${dti36_bval}"
+echo "       ${dti36_bvec}"
 echo "outdir: $outdir"
 
 # Run eddy pipeline
