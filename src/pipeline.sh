@@ -7,48 +7,37 @@ do
   case $key in
     --dti35_niigz)
         export dti35_niigz="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --dti35_bval)
         export dti35_bval="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --dti35_bvec)
         export dti35_bvec="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --dti36_niigz)
         export dti36_niigz="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --dti36_bval)
         export dti36_bval="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --dti36_bvec)
         export dti36_bvec="$2"
-	shift; shift
-	;;
+        shift; shift ;;
     --project)
         export project="$2"
-        shift; shift
-        ;;
+        shift; shift ;;
     --subject)
         export subject="$2"
-        shift; shift
-        ;;
+        shift; shift ;;
     --session)
         export session="$2"
-        shift; shift
-        ;;
+        shift; shift ;;
     --outdir)
         export outdir="$2"
-        shift; shift
-        ;;
+        shift; shift ;;
     *)
         echo "Unknown option ${2} - ignoring"
-        shift
-        ;;
+        shift ;;
   esac
 done
 
