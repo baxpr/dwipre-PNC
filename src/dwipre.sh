@@ -53,9 +53,14 @@ cd "${out_dir}"
 
 # FIXME 
 # Verify b=0 volumes
-# Get pre-normalize scaling factor from brain instead of whole FOV?
 # Wouldn't hurt to run FDT before and after and make an image to verify bvecs
-
+# Verify that geometry matches for both DTIs
+# Get pre-normalize scaling factor from brain instead of whole FOV?
+#   Move the prenormalization into sourced functions:
+#     For each run: find the b=0, coreg/average the b=0, run BET to get mask
+#     Find the union of the two masks
+#     For each run: compute and apply scaling factor using union mask
+# I don't think we need both flirt steps below - only the first
 
 ## acqparams file
 printf "${acq_params}\n" > acqparams.txt
