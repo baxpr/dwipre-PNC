@@ -70,7 +70,7 @@ function get_mask_from_b0 {
 
 function pre_normalize_dwi {
 
-  dwi_file="${1}"    # Input DWI image
+  dwi_file="${1}"    # Input DWI image (will be overwritten with result)
   bval_file="${2}"   # Matching bvals
 
   echo "Pre-normalize"
