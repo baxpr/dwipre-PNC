@@ -5,9 +5,9 @@
 ## These assumptions are hardcoded for this data:
 #	- the position of b0s in series (35 vol = 1, 12, 23; 36 vol = 1, 12, 23, 36)
 #	- acqparams file (phase encoding of A -> P and readout times; 0 -1 0 0.05)
-#	- index file (correspondence between volume and acqparams; 65 x 1's)
+#	- index file (correspondence between volume and acqparams; 71 x 1's)
 
-## Input files from xnat:
+## Input files from xnat (see pipeline.sh for the env variables that hold the filenames)
 #	- DTI_2x32_35.nii.gz/bval/bvec (run #1)
 #	- DTI_2x32_36.nii.gz/bval/bvec (run #2)
 

@@ -87,11 +87,11 @@ From: ubuntu:18.04
   # FSL
   export FSLDIR=/usr/local/fsl
   . ${FSLDIR}/etc/fslconf/fsl.sh
-  export PATH=${FSLDIR}/bin:${PATH}
-  export PATH=/usr/local/fsl-6.0.2/fslpython/envs/fslpython/bin/:${PATH}
+  export PATH=${FSLDIR}/bin:/usr/local/fsl-6.0.2/fslpython/envs/fslpython/bin/:${PATH}
 
   # Pipeline
   export PATH=/opt/src:${PATH}
+
 
 %runscript
   wrapper.sh "$@"
