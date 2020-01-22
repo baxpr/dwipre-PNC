@@ -2,7 +2,7 @@
 
 function find_zero_bvals {
 
-  bval_file="${1}"
+  bval_file="${1}"  # Input bval file
 
   # Load bvals from file to array
   read -a bvals <<< "$(cat ${bval_file})"
