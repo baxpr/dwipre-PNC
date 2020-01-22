@@ -51,6 +51,7 @@ function get_mask_from_b0 {
   done
 
   # Average the registered b=0 volumes
+  echo "Averaging b=0 images"
   fslmerge -t tmp_b0.nii.gz $(echo "${b0_files[@]}")
   fslmaths tmp_b0.nii.gz -Tmean "${out_pfx}_mean.nii.gz"
   
@@ -59,7 +60,7 @@ function get_mask_from_b0 {
   bet "${out_pfx}_mean.nii.gz" "${out_pfx}_brain" ${bet_opts}
 
   # Clean up temp files
-  rm -f tmp_b0_????.nii.gz tmp_b0.nii.gz
+  rm -f ${b0_files[@]} tmp_b0.nii.gz
   
 }
 
