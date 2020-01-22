@@ -50,6 +50,7 @@ printf '1\n%.0s' {1..71} > index.txt
 cd "${out_dir}"
 
 ## b0 normalization for 35 volume run
+echo "b=0 normalization for dti35"
 fslsplit "${dti35_niigz}" dwi35_
 
 # get mean b0 value
@@ -78,6 +79,7 @@ cp dwi35_0022.nii.gz b0_35_3.nii.gz
 
 
 ## b0 normalization for 36 volume run
+echo "b=0 normalization for dti36"
 fslsplit "${dti36_niigz}" dwi36_
 
 # get mean b0 value
@@ -116,6 +118,7 @@ fslmerge -t dwmri.nii.gz dwi35.nii.gz dwi36.nii.gz
 
 
 ## coregister b0s to 1st b0 in run #1
+echo "Coregister b=0"
 flirt_opts1="-ref b0_35_1.nii.gz -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear"
 flirt -in b0_35_2.nii.gz -out b0_35_2.nii.gz -omat b0_35_2.mat ${flirt_opts1}
 flirt -in b0_35_3.nii.gz -out b0_35_3.nii.gz -omat b0_35_3.mat ${flirt_opts1}
@@ -124,6 +127,7 @@ flirt -in b0_36_2.nii.gz -out b0_36_2.nii.gz -omat b0_36_2.mat ${flirt_opts1}
 flirt -in b0_36_3.nii.gz -out b0_36_3.nii.gz -omat b0_36_3.mat ${flirt_opts1}
 flirt -in b0_36_4.nii.gz -out b0_36_4.nii.gz -omat b0_36_4.mat ${flirt_opts1}
 
+echo "Apply transforms to b=0"
 flirt_opts2="-ref b0_35_1.nii.gz -paddingsize 0.0 -interp trilinear"
 flirt -in b0_35_2.nii.gz -applyxfm -init b0_35_2.mat -out b0_35_2_coreg.nii.gz ${flirt_opts2}
 flirt -in b0_35_3.nii.gz -applyxfm -init b0_35_3.mat -out b0_35_3_coreg.nii.gz ${flirt_opts2}
@@ -133,6 +137,7 @@ flirt -in b0_36_3.nii.gz -applyxfm -init b0_36_3.mat -out b0_36_3_coreg.nii.gz $
 flirt -in b0_36_4.nii.gz -applyxfm -init b0_36_4.mat -out b0_36_4_coreg.nii.gz ${flirt_opts2}
 
 ## average b0s (average of 7)
+echo "Average b=0"
 fslmaths \
   b0_35_1.nii.gz \
   -add b0_35_2_coreg.nii.gz \
@@ -146,6 +151,7 @@ fslmaths \
 #rm b0_3*
 
 ## bet b0
+echo "BET"
 bet b0.nii.gz b0_brain ${bet_opts}
 
 
@@ -155,6 +161,7 @@ paste -d '\t' "${dti35_bval}" "${dti36_bval}" > bvals.bvals
 paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > bvecs.bvecs
 
 ## eddy-correction
+echo "EDDY"
 eddy \
   --imain=dwmri.nii.gz \
   --mask=b0_brain_mask.nii.gz \
@@ -172,6 +179,7 @@ eddy \
 ### qc plots
 
 ## bet qc plot
+echo "QC plot"
 fsleyes render \
   --scene lightbox \
   -zx Z -nr 10 -nc 10 \
