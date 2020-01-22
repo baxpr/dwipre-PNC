@@ -33,6 +33,11 @@
 #	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
 #	- 
 
+# FIXME 
+# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
+# Verify that geometry matches for both DTIs
+
+
 # Output directory
 out_dir=../OUTPUTS
 
@@ -50,91 +55,44 @@ acq_params="0 -1 0 0.05"
 
 # Functions we will need
 #    pre_normalize_dwi
+#      get_mask_from_b0
+#      find_zero_bvals
 source functions.sh
 
 # Work in outputs directory
 cd "${out_dir}"
 
-# FIXME 
-# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
-# Verify that geometry matches for both DTIs
-# Get pre-normalize scaling factor from brain instead of whole FOV:
-#   Move the prenormalization into sourced functions:
-#     For each run: find the b=0, coreg/average the b=0, run BET to get mask
-#     Find the union of the two masks
-#     For each run: compute and apply scaling factor using union mask
-# I don't think we need both flirt steps below - only the first
-
 ## acqparams file
 printf "${acq_params}\n" > acqparams.txt
-
-## index file (one value for each volume of the final combined dwi image set)
-# Assume all volumes had the same acq params.
-printf '1\n%.0s' {1..71} > index.txt
 
 ## b0 normalization for 35- and 36-volume runs
 pre_normalize_dwi "${dti35_niigz}" "${dti35_bval}"
 pre_normalize_dwi "${dti36_niigz}" "${dti36_bval}"
 
-## concatenate dwi runs for eddy
+## concatenate dwi, bvals, bvecs for eddy
 fslmerge -t dwmri.nii.gz "${dti35_niigz}" "${dti36_niigz}"
+paste -d '\t' "${dti35_bval}" "${dti36_bval}" > dwmri.bvals
+paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > dwmri.bvecs
 
+## Brain mask on average b=0 of combined image set
+get_mask_from_b0 dwmri.nii.gz dwmri.bvals brain
 
-
-
-## coregister b0s to 1st b0 in run #1
-echo "Coregister b=0"
-flirt_opts1="-ref b0_35_1.nii.gz -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 6  -interp trilinear"
-flirt -in b0_35_2.nii.gz -out b0_35_2.nii.gz -omat b0_35_2.mat ${flirt_opts1}
-flirt -in b0_35_3.nii.gz -out b0_35_3.nii.gz -omat b0_35_3.mat ${flirt_opts1}
-flirt -in b0_36_1.nii.gz -out b0_36_1.nii.gz -omat b0_36_1.mat ${flirt_opts1}
-flirt -in b0_36_2.nii.gz -out b0_36_2.nii.gz -omat b0_36_2.mat ${flirt_opts1}
-flirt -in b0_36_3.nii.gz -out b0_36_3.nii.gz -omat b0_36_3.mat ${flirt_opts1}
-flirt -in b0_36_4.nii.gz -out b0_36_4.nii.gz -omat b0_36_4.mat ${flirt_opts1}
-
-echo "Apply transforms to b=0"
-flirt_opts2="-ref b0_35_1.nii.gz -paddingsize 0.0 -interp trilinear"
-flirt -in b0_35_2.nii.gz -applyxfm -init b0_35_2.mat -out b0_35_2_coreg.nii.gz ${flirt_opts2}
-flirt -in b0_35_3.nii.gz -applyxfm -init b0_35_3.mat -out b0_35_3_coreg.nii.gz ${flirt_opts2}
-flirt -in b0_36_1.nii.gz -applyxfm -init b0_36_1.mat -out b0_36_1_coreg.nii.gz ${flirt_opts2}
-flirt -in b0_36_2.nii.gz -applyxfm -init b0_36_2.mat -out b0_36_2_coreg.nii.gz ${flirt_opts2}
-flirt -in b0_36_3.nii.gz -applyxfm -init b0_36_3.mat -out b0_36_3_coreg.nii.gz ${flirt_opts2}
-flirt -in b0_36_4.nii.gz -applyxfm -init b0_36_4.mat -out b0_36_4_coreg.nii.gz ${flirt_opts2}
-
-## average b0s (average of 7)
-echo "Average b=0"
-fslmaths \
-  b0_35_1.nii.gz \
-  -add b0_35_2_coreg.nii.gz \
-  -add b0_35_3_coreg.nii.gz \
-  -add b0_36_1_coreg.nii.gz \
-  -add b0_36_2_coreg.nii.gz \
-  -add b0_36_3_coreg.nii.gz \
-  -add b0_36_4_coreg.nii.gz \
-  -div 7 \
-  b0.nii.gz \
-  -odt float
-#rm b0_3*
-
-## bet b0
-echo "BET"
-bet b0.nii.gz b0_brain ${bet_opts}
-
-
-
-## concatenate bvals and bvecs 
-paste -d '\t' "${dti35_bval}" "${dti36_bval}" > bvals.bvals
-paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > bvecs.bvecs
+## Index file (one value for each volume of the final combined dwi image set)
+# Assume all volumes had the same acq params, the first entry in acq_params.txt
+dim4=$(fslhd dwmri.nii.gz |grep ^dim4)
+dim4=$(awk '{ print $2 }' <<< ${dim4})
+if [ -e index.txt ] ; then rm -f index.txt ; fi
+for i in $(seq 1 ${dim4}) ; do echo '1' >> index.txt ; done
 
 ## eddy-correction
 echo "EDDY"
 eddy \
   --imain=dwmri.nii.gz \
-  --mask=b0_brain_mask.nii.gz \
+  --mask=brain_mask.nii.gz \
   --acqp=acqparams.txt \
   --index=index.txt \
-  --bvecs=bvecs.bvecs \
-  --bvals=bvals.bvals \
+  --bvecs=dwmri.bvecs \
+  --bvals=dwmri.bvals \
   --out=eddy_results \
   --verbose \
   --cnr_maps

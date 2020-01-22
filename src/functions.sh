@@ -55,13 +55,13 @@ function get_mask_from_b0 {
   fslmaths tmp_b0.nii.gz -Tmean "${out_pfx}_mean.nii.gz"
   
   # Compute brain mask
+  echo "BET options ${bet_opts}"
   bet "${out_pfx}_mean.nii.gz" "${out_pfx}_brain" ${bet_opts}
 
   # Clean up temp files
-  rm -f tmp_b0*.nii.gz
+  rm -f tmp_b0_????.nii.gz tmp_b0.nii.gz
   
 }
-
 
 
 function pre_normalize_dwi {
@@ -71,6 +71,7 @@ function pre_normalize_dwi {
 
   echo "Pre-normalize"
 
+  # Get the brain mask from average b=0 image
   get_mask_from_b0 "${dwi_file}" "${bval_file}" tmp_b0
 
   # Get mean in-mask intensity
