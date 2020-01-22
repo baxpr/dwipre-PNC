@@ -62,7 +62,7 @@ echo "    ${dti36_bvec}"
 echo "outdir: $outdir"
 
 # Run eddy pipeline
-dwipre
+dwipre.sh
 
 # Organize outputs
 organize_outputs
