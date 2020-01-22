@@ -57,6 +57,7 @@ cd "${out_dir}"
 printf "${acq_params}\n" > acqparams.txt
 
 ## index file (one value for each volume of the final combined dwi image set)
+# Assume all volumes had the same acq params.
 printf '1\n%.0s' {1..71} > index.txt
 
 
