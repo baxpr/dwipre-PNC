@@ -6,7 +6,11 @@ Preprocessing pipeline with FSL 5.0.11 eddy, specific to PNC DTI dataset.
 
 Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 
-Verify that geometry matches for both DTIs. fslval, fslorient to get header fields
+Verify that geometry matches for both DTIs. fslval, fslorient to get header fields:
+
+fslval dim1, dim2, dim3, sform_xorient, sform_yorient, sform_zorient
+
+fslorient -getsform
 
 
 ## Assumptions
