@@ -81,4 +81,6 @@ Wouldn't hurt to run FDT before and after and make an image to verify bvecs
             organize_outputs.sh    Arranges outputs for DAX
     
     localtest.sh                   To run the pipeline outside the container (for testing)
+    test_sing.sh                   Test the singularity container
+    
 
