@@ -94,5 +94,5 @@ From: ubuntu:18.04
 
 
 %runscript
-  wrapper.sh "$@"
+  xwrapper.sh "$@"
 
