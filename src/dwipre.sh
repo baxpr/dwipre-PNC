@@ -64,7 +64,7 @@ for i in $(seq 1 ${dim4}) ; do echo '1' >> index.txt ; done
 
 ## eddy-correction
 echo "EDDY"
-eddy \
+eddy_openmp \
   --imain=dwmri.nii.gz \
   --mask=b0_mask.nii.gz \
   --acqp=acqparams.txt \
