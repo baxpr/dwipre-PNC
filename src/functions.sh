@@ -26,7 +26,7 @@ function find_zero_bvals {
   # Find 0-based index of volumes with b=0
   zinds=()
   for i in "${!bvals[@]}"; do
-    if [[ ${bvals[i]} = 0 ]] ; then
+    if (( $(echo "${bvals[i]} == 0" |bc -l) )) ; then
       zinds+=($i)
     fi
   done
