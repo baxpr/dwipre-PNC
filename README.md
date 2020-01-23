@@ -2,10 +2,6 @@
 
 Preprocessing pipeline with FSL 5.0.11 eddy, specific to PNC DTI dataset.
 
-## FIXME 
-
-Wouldn't hurt to run FDT before and after and make an image to verify bvecs
-
 
 ## Assumptions
 

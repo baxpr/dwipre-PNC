@@ -4,7 +4,7 @@ singularity run \
 --cleanenv \
 --bind INPUTS:/INPUTS \
 --bind OUTPUTS:/OUTPUTS \
-dwipre-PNC-v1.0.0.simg \
+baxpr-dwipre-PNC-master-v1.1.0.simg \
 --dti35_niigz /INPUTS/DTI_2x32_35.nii.gz \
 --dti35_bvals /INPUTS/DTI_2x32_35.bval \
 --dti35_bvecs /INPUTS/DTI_2x32_35.bvec \
