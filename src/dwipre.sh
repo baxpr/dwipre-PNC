@@ -7,11 +7,6 @@
 source functions.sh
 
 
-# FIXME 
-# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
-# Verify that geometry matches for both DTIs
-
-
 # Copy input files to working directory, with specified filenames
 cp "${dti35_niigz}" "${outdir}"/dti35.nii.gz
 dti35_niigz=dti35.nii.gz
@@ -36,6 +31,7 @@ dti36_bvecs=dti36.bvecs
 cd "${outdir}"
 
 ## acqparams file
+echo "Using acq_params ${acq_params}"
 printf "${acq_params}\n" > acqparams.txt
 
 ## b0 normalization for 35- and 36-volume runs
