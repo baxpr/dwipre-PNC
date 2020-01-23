@@ -32,7 +32,7 @@ Verify that geometry matches for both DTIs
 
 3. A mean b=0 image for the combined series is computed, and BET is used to compute a brain mask from it.
 
-4. Eddy is run on the combined series, using the mask from the previous step.
+4. EDDY is run on the combined series, using the mask from the previous step.
 
 ## Inputs
 
