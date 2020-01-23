@@ -11,9 +11,9 @@ Verify that geometry matches for both DTIs
 
 ## Assumptions
 
-- Only a single entry allowed in acq_params file, applied to all DWI volumes
+- Only a single entry is allowed in acq_params file. It is applied to all DWI volumes.
 
-- b=0 volumes are indicated with a value of exactly 0 in the bval files
+- b=0 volumes are indicated with a value of exactly 0 in the bval files.
 
 
 ## Inputs
