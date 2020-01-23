@@ -30,6 +30,14 @@ dti36_bvecs=dti36.bvecs
 # Work in outputs directory
 cd "${outdir}"
 
+## Verify matching geometry for input images
+geom35=$(get_nifti_geom ${dti35_niigz})
+geom36=$(get_nifti_geom ${dti36_niigz})
+if [ "${geom35}" != "${geom36}" ] ; then
+  echo "Mismatching geometry for input DWIs"  1>&2
+  exit 1
+fi
+
 ## acqparams file
 echo "Using acq_params ${acq_params}"
 printf "${acq_params}\n" > acqparams.txt

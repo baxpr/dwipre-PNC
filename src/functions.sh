@@ -1,5 +1,21 @@
 #!/bin/bash
 
+function get_nifti_geom {
+  
+  nii_file="${1}"
+  
+  vals=
+  for field in dim1 dim2 dim3 sform_xorient sform_yorient sform_zorient ; do
+    val=$(fslval "${nii_file}" $field)
+    vals="${vals} ${val}"
+  done
+  vals="${vals} $(fslorient -getsform ${nii_file})"
+  
+  echo "${vals}"
+
+}
+
+
 function find_zero_bvals {
 
   bval_file="${1}"  # Input bval file
