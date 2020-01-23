@@ -22,7 +22,7 @@ Verify that geometry matches for both DTIs
 
 2. The scaled images are combined into a single series.
 
-3. A mean b=0 image for the entire combined series is computed, and BET used to compute a brain mask from it.
+3. A mean b=0 image for the combined series is computed, and BET is used to compute a brain mask from it.
 
 4. Eddy is run on the combined series, using the mask from the previous step.
 
