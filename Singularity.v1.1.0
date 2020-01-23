@@ -45,7 +45,7 @@ From: ubuntu:18.04
 
   # Get and install main FSL package
   cd /usr/local
-  wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${fsl_version}-centos7_64.tar.gz
+  wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${fsl_version}-centos7_64.tar.gz
   tar zxf fsl-${fsl_version}-centos7_64.tar.gz
   rm fsl-${fsl_version}-centos7_64.tar.gz
   
