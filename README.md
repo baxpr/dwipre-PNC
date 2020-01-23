@@ -16,6 +16,16 @@ Verify that geometry matches for both DTIs
 - b=0 volumes are indicated with a value of exactly 0 in the bval files.
 
 
+## Pipeline
+
+1. For each run ("dti35" and "dti36"), a mean b=0 image is computed from all available b=0 volumes. BET is used to find a brain mask for the run. The mean intensity of in-brain voxels is computed. All DWI volumes are then scaled, per run, by a factor of 1000*(mean intensity).
+
+2. The scaled images are combined into a single series.
+
+3. A mean b=0 image for the entire combined series is computed, and BET used to compute a brain mask from it.
+
+4. Eddy is run on the combined series, using the mask from the previous step.
+
 ## Inputs
 
     --dti35_niigz <dti35.nii.gz>      First DWI image set
