@@ -67,6 +67,7 @@ eddy \
   --verbose \
   --cnr_maps
 
+# Capture the input bvals with the outputs
 cp dwmri.bvals eddy.bvals
 
 
