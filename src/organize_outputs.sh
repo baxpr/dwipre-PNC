@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "${out_dir}"
+cd "${outdir}"
 
 mkdir PDF
 mv dwipre-PNC.pdf PDF

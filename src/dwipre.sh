@@ -35,21 +35,6 @@
 #	- 
 
 
-# FIXME 
-# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
-# Verify that geometry matches for both DTIs
-
-# Output directory
-out_dir=../OUTPUTS
-
-# Inputs (Filenames in out_dir)
-dti35_niigz=DTI_2x32_35.nii.gz
-dti35_bval=DTI_2x32_35.bval
-dti35_bvec=DTI_2x32_35.bvec
-dti36_niigz=DTI_2x32_36.nii.gz
-dti36_bval=DTI_2x32_36.bval
-dti36_bvec=DTI_2x32_36.bvec
-
 # BET options (note, -n -m are already hard-coded later, for pipeline 
 # to work correctly)
 export bet_opts="-f 0.3 -R"
@@ -57,28 +42,53 @@ export bet_opts="-f 0.3 -R"
 # Acquisition params. Only one line / one entry is accommodated
 acq_params="0 -1 0 0.05"
 
-
 # Functions we will need
 #    pre_normalize_dwi
 #      get_mask_from_b0
 #      find_zero_bvals
 source functions.sh
 
+
+# FIXME 
+# Wouldn't hurt to run FDT before and after and make an image to verify bvecs
+# Verify that geometry matches for both DTIs
+
+
+# Copy input files to working directory, with specified filenames
+cp "${dti35_niigz}" "${outdir}"/dti35.nii.gz
+dti35_niigz=dti35.nii.gz
+
+cp "${dti35_bval}" "${outdir}"/dti35.bvals
+dti35_bvals=dti35.bvals
+
+cp "${dti35_bvec}" "${outdir}"/dti35.bvecs
+dti35_bvecs=dti35.bvecs
+
+cp "${dti36_niigz}" "${outdir}"/dti36.nii.gz
+dti36_niigz=dti36.nii.gz
+
+cp "${dti36_bval}" "${outdir}"/dti36.bvals
+dti36_bvals=dti36.bvals
+
+cp "${dti36_bvec}" "${outdir}"/dti36.bvecs
+dti36_bvecs=dti36.bvecs
+
+
 # Work in outputs directory
-cd "${out_dir}"
+cd "${outdir}"
 
 ## acqparams file
 printf "${acq_params}\n" > acqparams.txt
 
 ## b0 normalization for 35- and 36-volume runs
 # Overwrites existing files with globally scaled values
-pre_normalize_dwi "${dti35_niigz}" "${dti35_bval}"
-pre_normalize_dwi "${dti36_niigz}" "${dti36_bval}"
+pre_normalize_dwi "${dti35_niigz}" "${dti35_bvals}"
+pre_normalize_dwi "${dti36_niigz}" "${dti36_bvals}"
 
 ## concatenate dwi, bvals, bvecs for eddy
 fslmerge -t dwmri.nii.gz "${dti35_niigz}" "${dti36_niigz}"
-paste -d '\t' "${dti35_bval}" "${dti36_bval}" > dwmri.bvals
-paste -d '\t' "${dti35_bvec}" "${dti36_bvec}" > dwmri.bvecs
+paste -d '\t' "${dti35_bvals}" "${dti36_bvals}" > dwmri.bvals
+paste -d '\t' "${dti35_bvecs}" "${dti36_bvecs}" > dwmri.bvecs
 
 ## Brain mask on average b=0 of combined image set
 get_mask_from_b0 dwmri.nii.gz dwmri.bvals b0
@@ -123,8 +133,8 @@ fsleyes render \
 convert \
   -size 2600x3365 xc:white \
   -gravity center \( bet_qc.png -resize 2400x \) -geometry +0+0 -composite \
-  -gravity center -pointsize 48 -annotate +0-1300 "eddy preprocess for PNC" \
+  -gravity North -pointsize 48 -annotate +0+50 "EDDY preprocess for PNC" \
   -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
-  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
+  -gravity NorthWest -pointsize 48 -annotate +50+150 "${project} ${subject} ${session}" \
   dwipre-PNC.pdf
 

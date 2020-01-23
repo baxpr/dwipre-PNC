@@ -8,20 +8,20 @@ do
     --dti35_niigz)
         export dti35_niigz="$2"
         shift; shift ;;
-    --dti35_bval)
-        export dti35_bval="$2"
+    --dti35_bvals)
+        export dti35_bvals="$2"
         shift; shift ;;
-    --dti35_bvec)
-        export dti35_bvec="$2"
+    --dti35_bvecs)
+        export dti35_bvecs="$2"
         shift; shift ;;
     --dti36_niigz)
         export dti36_niigz="$2"
         shift; shift ;;
-    --dti36_bval)
-        export dti36_bval="$2"
+    --dti36_bvals)
+        export dti36_bvals="$2"
         shift; shift ;;
-    --dti36_bvec)
-        export dti36_bvec="$2"
+    --dti36_bvecs)
+        export dti36_bvecs="$2"
         shift; shift ;;
     --project)
         export project="$2"
@@ -41,14 +41,14 @@ do
   esac
 done
 
-# Inputs report
+# Report inputs
 echo "${project} ${subject} ${session}"
 echo "    ${dti35_niigz}"
-echo "       ${dti35_bval}"
-echo "       ${dti35_bvec}"
+echo "       ${dti35_bvals}"
+echo "       ${dti35_bvecs}"
 echo "    ${dti36_niigz}"
-echo "       ${dti36_bval}"
-echo "       ${dti36_bvec}"
+echo "       ${dti36_bvals}"
+echo "       ${dti36_bvecs}"
 echo "outdir: $outdir"
 
 # Run eddy pipeline
