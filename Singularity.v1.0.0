@@ -41,6 +41,7 @@ From: ubuntu:18.04
           libxinerama1 libfreetype6 libxft2 libxrandr2 libmng2 \
           libgtk2.0-0 libpulse0 libasound2 libcaca0 libopenblas-base \
           bzip2 dc bc
+  apt-get -y install language-pack-en
 
   # Get and install main FSL package
   cd /usr/local
@@ -54,13 +55,10 @@ From: ubuntu:18.04
   export PATH=${FSLDIR}/bin:${PATH}
 
   # Run the FSL python installer
-  #cp /opt/src/fslpython_environment.yml ${FSLDIR}/etc/fslconf
-  #cp /opt/src/fslpython_install.sh ${FSLDIR}/etc/fslconf
   ${FSLDIR}/etc/fslconf/fslpython_install.sh
   
   # Remove non-working old fsleyes
-  rm $FSLDIR/bin/fsleyes
-  rm -r $FSLDIR/bin/FSLeyes
+  rm -r $FSLDIR/bin/fsleyes $FSLDIR/bin/FSLeyes
 
   # Run the 6.0.2 python installer to get fsleyes in /usr/local/fsl-6.0.2/fslpython/envs/fslpython/bin/fsleyes
   /opt/src/fslconf-local/fslpython_install_local.sh
