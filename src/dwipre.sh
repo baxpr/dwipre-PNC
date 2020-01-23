@@ -58,19 +58,19 @@ source functions.sh
 cp "${dti35_niigz}" "${outdir}"/dti35.nii.gz
 dti35_niigz=dti35.nii.gz
 
-cp "${dti35_bval}" "${outdir}"/dti35.bvals
+cp "${dti35_bvals}" "${outdir}"/dti35.bvals
 dti35_bvals=dti35.bvals
 
-cp "${dti35_bvec}" "${outdir}"/dti35.bvecs
+cp "${dti35_bvecs}" "${outdir}"/dti35.bvecs
 dti35_bvecs=dti35.bvecs
 
 cp "${dti36_niigz}" "${outdir}"/dti36.nii.gz
 dti36_niigz=dti36.nii.gz
 
-cp "${dti36_bval}" "${outdir}"/dti36.bvals
+cp "${dti36_bvals}" "${outdir}"/dti36.bvals
 dti36_bvals=dti36.bvals
 
-cp "${dti36_bvec}" "${outdir}"/dti36.bvecs
+cp "${dti36_bvecs}" "${outdir}"/dti36.bvecs
 dti36_bvecs=dti36.bvecs
 
 
