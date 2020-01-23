@@ -81,6 +81,7 @@ Code authored by Suzanne Avery and edited by Baxter P. Rogers.
      \- pipeline.sh                Entry to processing pipeline - parses inputs and calls processing code
          \- dwipre.sh              Workhorse
             functions.sh           Support functions for dwipre.sh
+            qcplots.sh             QC images for PDF    
             organize_outputs.sh    Arranges outputs for DAX
     
     localtest.sh                   To run the pipeline outside the container (for testing)
