@@ -56,21 +56,22 @@ Wouldn't hurt to run FDT before and after and make an image to verify bvecs
 ## Outputs
 
     PDF                 QC report
-
+    
     PRE_EDDY_NIFTI      DW images after global rescaling but before eddy correction
     PRE_EDDY_BVALS
     PRE_EDDY_BVECS
-
+    
     EDDY_NIFTI          Eddy-corrected DW images
     EDDY_BVALS
     EDDY_BVECS
-
+    
     EDDY_OUT            Rest of EDDY output files
-
+    
     B0_MEAN             Mean of b=0 images from PRE_EDDY_NIFTI
-
+    
     B0_MASK             Brain mask found by BET applied to B0_MEAN
-
+    
+    DTIFIT              Basic dtifit results from eddy corrected data
 
 ## Code info
 

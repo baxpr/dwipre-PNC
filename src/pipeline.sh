@@ -57,6 +57,9 @@ echo "acq_params: $acq_params"
 # Run eddy pipeline
 dwipre.sh
 
+# QC and PDF
+qcplots.sh
+
 # Organize outputs
 organize_outputs.sh
 

@@ -37,3 +37,7 @@ mv b0_mean.nii.gz B0_MEAN
 mkdir B0_MASK
 mv b0_mask.nii.gz B0_MASK
 
+
+mkdir DTIFIT
+mv dtifit_* DTIFIT
+

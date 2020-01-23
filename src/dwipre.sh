@@ -10,19 +10,14 @@ source functions.sh
 # Copy input files to working directory, with specified filenames
 cp "${dti35_niigz}" "${outdir}"/dti35.nii.gz
 dti35_niigz=dti35.nii.gz
-
 cp "${dti35_bvals}" "${outdir}"/dti35.bvals
 dti35_bvals=dti35.bvals
-
 cp "${dti35_bvecs}" "${outdir}"/dti35.bvecs
 dti35_bvecs=dti35.bvecs
-
 cp "${dti36_niigz}" "${outdir}"/dti36.nii.gz
 dti36_niigz=dti36.nii.gz
-
 cp "${dti36_bvals}" "${outdir}"/dti36.bvals
 dti36_bvals=dti36.bvals
-
 cp "${dti36_bvecs}" "${outdir}"/dti36.bvecs
 dti36_bvecs=dti36.bvecs
 
@@ -61,7 +56,7 @@ dim4=$(fslval dwmri.nii.gz dim4)
 if [ -e index.txt ] ; then rm -f index.txt ; fi
 for i in $(seq 1 ${dim4}) ; do echo '1' >> index.txt ; done
 
-## eddy-correction
+## eddy correction
 echo "EDDY"
 eddy_openmp \
   --imain=dwmri.nii.gz \
@@ -77,26 +72,13 @@ eddy_openmp \
 # Capture the input bvals with the outputs
 cp dwmri.bvals eddy.bvals
 
-
-
-### qc plots
-echo "QC plot"
-
-## bet qc plot
-# 4mm slice spacing with 36 slices gives 144mm coverage which is probably good
-fsleyes render \
-  --scene lightbox \
-  -zx Z -nr 6 -nc 6 -hc -ss 4 \
-  --outfile bet_qc.png \
-  b0_mean.nii.gz -dr 0 99% \
-  b0_mask.nii.gz -ot mask --outline -w 4 -mc 255 0 0
-
-# PDF
-convert \
-  -size 2600x3365 xc:white \
-  -gravity center \( bet_qc.png -resize 2400x \) -geometry +0+0 -composite \
-  -gravity North -pointsize 48 -annotate +0+50 "EDDY preprocess for PNC" \
-  -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
-  -gravity NorthWest -pointsize 48 -annotate +50+150 "${project} ${subject} ${session}" \
-  dwipre-PNC.pdf
+# Quick DTI fit for data check
+echo "DTIFIT"
+dtifit \
+  --data=eddy.nii.gz \
+  --bvecs=eddy.eddy_rotated_bvecs \
+  --bvals=eddy.bvals \
+  --mask=b0_mask.nii.gz \
+  --save_tensor \
+  --out=dtifit
 
