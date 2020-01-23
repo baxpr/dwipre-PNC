@@ -20,7 +20,13 @@ Verify that geometry matches for both DTIs
 
 1. For each run ("dti35" and "dti36"):
 
-    a. a mean b=0 image is computed from all available b=0 volumes. BET is used to find a brain mask for the run. The mean intensity of in-brain voxels is computed. All DWI volumes of the run are then scaled by a factor of 1000*(mean intensity).
+    a. A mean b=0 image is computed from all available b=0 volumes.
+    
+    b. BET is used to find a brain mask for the run.
+    
+    c. The mean intensity of in-brain voxels is computed.
+    
+    d. All DWI volumes of the run are scaled by a factor of 1000*(mean intensity).
 
 2. The scaled images are combined into a single series.
 
