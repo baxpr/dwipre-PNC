@@ -34,6 +34,7 @@ Verify that geometry matches for both DTIs
 
 4. EDDY is run on the combined series, using the mask from the previous step.
 
+
 ## Inputs
 
     --dti35_niigz <dti35.nii.gz>      First DWI image set
@@ -47,11 +48,11 @@ Verify that geometry matches for both DTIs
     --bet_opts "-f 0.3 -R"            BET options (default shown)
     --acq_params "0 -1 0 0.05"        EDDY acq_params (default shown)
 
-    --project <project_label>
+    --project <project_label>         Label information from XNAT
     --subject <subject_label>
     --session <session_label>
 
-    --outdir <output_directory>
+    --outdir <output_directory>       Results are stored here
 
 
 ## Outputs
