@@ -30,6 +30,7 @@ function find_zero_bvals {
       zinds+=($i)
     fi
   done
+
   echo ${zinds[@]}
 
 }
