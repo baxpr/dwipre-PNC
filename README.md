@@ -1,1 +1,55 @@
+# dwipre-PNC
+
 Preprocessing pipeline with FSL 5.0.11 eddy, specific to PNC DTI dataset.
+
+## FIXME 
+
+Wouldn't hurt to run FDT before and after and make an image to verify bvecs
+
+Verify that geometry matches for both DTIs
+
+
+## Assumptions
+
+- Only a single entry allowed in acq_params file, applied to all DWI volumes
+
+- b=0 volumes are indicated with a value of exactly 0 in the bval files
+
+
+## Inputs
+
+    --dti35_niigz <dti35.nii.gz>      First DWI image set
+    --dti35_bvals <dti35.bvals>
+    --dti35_bvecs <dti35.bvecs>
+
+    --dti36_niigz <dti36.nii.gz>      Second DWI image set
+    --dti36_bvals <dti36.bvals>
+    --dti36_bvecs <dti36.bvecs>
+
+    --bet_opts "-f 0.3 -R"            BET options (default shown)
+    --acq_params "0 -1 0 0.05"        EDDY acq_params (default shown)
+
+    --project <project_label>
+    --subject <subject_label>
+    --session <session_label>
+
+    --outdir <output_directory>
+
+
+## Outputs
+
+    PDF                 QC report
+
+    PRE_EDDY_NIFTI      DW images after global rescaling but before eddy correction
+    PRE_EDDY_BVALS
+    PRE_EDDY_BVECS
+
+    EDDY_NIFTI          Eddy-corrected DW images
+    EDDY_BVALS
+    EDDY_BVECS
+
+    EDDY_OUT            Rest of EDDY output files
+
+    B0_MEAN             Mean of b=0 images from PRE_EDDY_NIFTI
+
+    B0_MASK             Brain mask found by BET applied to B0_MEAN

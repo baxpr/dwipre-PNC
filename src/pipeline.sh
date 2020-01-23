@@ -1,6 +1,13 @@
 #!/bin/bash
 
-# Parse options
+# Default BET options (note, -n -m are already hard-coded later, for pipeline 
+# to work correctly)
+export bet_opts="-f 0.3 -R"
+
+# Default acquisition params. Only one line / one entry is accommodated
+export acq_params="0 -1 0 0.05"
+
+# Parse command line options
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -22,6 +29,12 @@ do
         shift; shift ;;
     --dti36_bvecs)
         export dti36_bvecs="$2"
+        shift; shift ;;
+    --bet_opts)
+        export bet_opts="$2"
+        shift; shift ;;
+    --acq_params)
+        export acq_params="$2"
         shift; shift ;;
     --project)
         export project="$2"
@@ -50,6 +63,8 @@ echo "    ${dti36_niigz}"
 echo "       ${dti36_bvals}"
 echo "       ${dti36_bvecs}"
 echo "outdir: $outdir"
+echo "bet_opts: $bet_opts"
+echo "acq_params: $acq_params"
 
 # Run eddy pipeline
 dwipre.sh

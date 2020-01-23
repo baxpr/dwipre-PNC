@@ -1,47 +1,5 @@
 #!/bin/bash
 
-### PREPROCESSING SCRIPT FOR PNC_V3 DTI DATA
-
-## These assumptions are hardcoded:
-#    - Only a single entry allowed in acq_params file, applied to all DWI volumes
-#    - b=0 volumes are indicated with a value of exactly 0 in the bval files
-
-## Input files from xnat (see pipeline.sh for the env variables that hold the filenames)
-#    - DTI_2x32_35.nii.gz/bval/bvec (run #1)
-#    - DTI_2x32_36.nii.gz/bval/bvec (run #2)
-
-## Major output files are:
-#    - dwmri.nii.gz        Original DWI images, globally rescaled per run
-#    - dwmri.bvals         bvals for above
-#    - dwmri.bvecs         bvecs for above
-#    - b0_mean.nii.gz      average of all coregistered b=0 images
-#    - b0_mask.nii.gz      binary brain mask from BET
-#    - acq_params.txt
-#    - index.txt
-#    - EDDY results in eddy.<contents>
-#        - nii.gz                    eddy corrected dwi series
-#        - rotated_bvecs             adjusted b vectors
-#        - bvals                     b values copied from input
-#        - eddy_cnr_maps.nii.gz      snr for b0s, cnr for dwis
-#        - eddy_parameters           inter-volume movement 6 dof
-#        - eddy_movement_rms
-#        - eddy_restricted_movement_rms
-#        - eddy_values_of_all_input_parameters
-#        - eddy_command_txt
-
-
-## QC plots are:
-#	- bet_qc.png = lightbox plot of b0.nii.gz with red skull-stripped mask outline
-#	- 
-
-
-# BET options (note, -n -m are already hard-coded later, for pipeline 
-# to work correctly)
-export bet_opts="-f 0.3 -R"
-
-# Acquisition params. Only one line / one entry is accommodated
-acq_params="0 -1 0 0.05"
-
 # Functions we will need
 #    pre_normalize_dwi
 #      get_mask_from_b0
