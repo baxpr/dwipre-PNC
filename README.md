@@ -72,3 +72,15 @@ Verify that geometry matches for both DTIs
     B0_MEAN             Mean of b=0 images from PRE_EDDY_NIFTI
 
     B0_MASK             Brain mask found by BET applied to B0_MEAN
+
+
+## Code map
+
+    xwrapper.sh                    Entry point for singularity container - sets up xvfb
+     \- pipeline.sh                Entry to processing pipeline - parses inputs and calls processing code
+          \- dwipre.sh             Workhorse
+             organize_outputs.sh   Arranges outputs for DAX
+    
+    functions.sh                   Support functions for dwipre.sh
+    localtest.sh                   To run the pipeline outside the container (for testing)
+
