@@ -13,41 +13,29 @@ do
   key="$1"
   case $key in
     --dti35_niigz)
-        export dti35_niigz="$2"
-        shift; shift ;;
+        export dti35_niigz="$2" ; shift; shift;;
     --dti35_bvals)
-        export dti35_bvals="$2"
-        shift; shift ;;
+        export dti35_bvals="$2" ; shift; shift;;
     --dti35_bvecs)
-        export dti35_bvecs="$2"
-        shift; shift ;;
+        export dti35_bvecs="$2" ; shift; shift;;
     --dti36_niigz)
-        export dti36_niigz="$2"
-        shift; shift ;;
+        export dti36_niigz="$2" ; shift; shift;;
     --dti36_bvals)
-        export dti36_bvals="$2"
-        shift; shift ;;
+        export dti36_bvals="$2" ; shift; shift;;
     --dti36_bvecs)
-        export dti36_bvecs="$2"
-        shift; shift ;;
+        export dti36_bvecs="$2" ; shift; shift;;
     --bet_opts)
-        export bet_opts="$2"
-        shift; shift ;;
+        export bet_opts="$2"    ; shift; shift;;
     --acq_params)
-        export acq_params="$2"
-        shift; shift ;;
+        export acq_params="$2"  ; shift; shift;;
     --project)
-        export project="$2"
-        shift; shift ;;
+        export project="$2"     ; shift; shift;;
     --subject)
-        export subject="$2"
-        shift; shift ;;
+        export subject="$2"     ; shift; shift;;
     --session)
-        export session="$2"
-        shift; shift ;;
+        export session="$2"     ; shift; shift;;
     --outdir)
-        export outdir="$2"
-        shift; shift ;;
+        export outdir="$2"      ; shift; shift;;
     *)
         echo "Ignoring unknown option ${1}"
         shift ;;
