@@ -57,8 +57,7 @@ get_mask_from_b0 dwmri.nii.gz dwmri.bvals b0
 
 ## Index file (one value for each volume of the final combined dwi image set)
 # Assume all volumes had the same acq params, the first entry in acq_params.txt
-dim4=$(fslhd dwmri.nii.gz |grep ^dim4)
-dim4=$(awk '{ print $2 }' <<< ${dim4})
+dim4=$(fslval dwmri.nii.gz dim4)
 if [ -e index.txt ] ; then rm -f index.txt ; fi
 for i in $(seq 1 ${dim4}) ; do echo '1' >> index.txt ; done
 
