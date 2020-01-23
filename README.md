@@ -72,7 +72,9 @@ Wouldn't hurt to run FDT before and after and make an image to verify bvecs
     B0_MASK             Brain mask found by BET applied to B0_MEAN
 
 
-## Code map
+## Code info
+
+Code authored by Suzanne Avery and edited by Baxter P. Rogers.
 
     xwrapper.sh                    Entry point for singularity container - sets up xvfb
      \- pipeline.sh                Entry to processing pipeline - parses inputs and calls processing code
