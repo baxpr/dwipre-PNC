@@ -78,9 +78,9 @@ Verify that geometry matches for both DTIs
 
     xwrapper.sh                    Entry point for singularity container - sets up xvfb
      \- pipeline.sh                Entry to processing pipeline - parses inputs and calls processing code
-          \- dwipre.sh             Workhorse
-             functions.sh          Support functions for dwipre.sh
-             organize_outputs.sh   Arranges outputs for DAX
+         \- dwipre.sh              Workhorse
+            functions.sh           Support functions for dwipre.sh
+            organize_outputs.sh    Arranges outputs for DAX
     
     localtest.sh                   To run the pipeline outside the container (for testing)
 
