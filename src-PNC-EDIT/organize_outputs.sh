@@ -2,6 +2,13 @@
 
 cd "${outdir}"
 
+create_file_manifest.sh
+
+
+mkdir MANIFEST
+mv manifest.txt MANIFEST
+
+
 mkdir PDF
 mv dwipre-PNC.pdf PDF
 
