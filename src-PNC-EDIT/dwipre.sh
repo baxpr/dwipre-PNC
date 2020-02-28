@@ -21,6 +21,9 @@ dti36_bvals=dti36.bvals
 cp "${dti36_bvecs}" "${outdir}"/dti36.bvecs
 dti36_bvecs=dti36.bvecs
 
+# Mask from input instead of BET
+cp "${mask_niigz}" "${outdir}"/b0_mask.nii.gz
+
 
 # Work in outputs directory
 cd "${outdir}"
@@ -46,9 +49,6 @@ pre_normalize_dwi "${dti36_niigz}" "${dti36_bvals}"
 fslmerge -t dwmri.nii.gz "${dti35_niigz}" "${dti36_niigz}"
 paste -d '\t' "${dti35_bvals}" "${dti36_bvals}" > dwmri.bvals
 paste -d '\t' "${dti35_bvecs}" "${dti36_bvecs}" > dwmri.bvecs
-
-## Brain mask on average b=0 of combined image set
-get_mask_from_b0 dwmri.nii.gz dwmri.bvals b0
 
 ## Index file (one value for each volume of the final combined dwi image set)
 # Assume all volumes had the same acq params, the first entry in acq_params.txt
