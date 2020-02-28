@@ -1,6 +1,8 @@
-# dwipre-PNC
+# dwipre-PNC-EDIT
 
 Preprocessing pipeline with FSL 5.0.11 eddy, specific to PNC DTI dataset.
+
+This version uses a supplied brain mask instead of finding one with BET.
 
 
 ## Assumptions

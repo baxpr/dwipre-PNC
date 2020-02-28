@@ -4,12 +4,12 @@ From: ubuntu:18.04
 %help
 
   Runs FSL's eddy for PNC. See /opt/README.md
-
-
+  
+  
 %files
 
-  src        /opt
-  README.md  /opt
+  src-PNC-EDIT    /opt/src
+  README.md       /opt
   
 
 %post
